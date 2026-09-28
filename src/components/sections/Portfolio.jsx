@@ -1,14 +1,29 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function Portfolio() {
   const { t, lang } = useLanguage();
-  const [activeCategory, setActiveCategory] = useState('4320a3a6-909c-4d60-ba22-94c4ecbb2679');
+  const allProjects = t.work?.projects || [];
+  const categories = t.work?.categories || [];
+  const [activeCategory, setActiveCategory] = useState(categories[0]?.id || 'all');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const closeButtonRef = useRef(null);
   const lightboxTriggerRef = useRef(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Sync activeCategory when categories change or initialize
+  useEffect(() => {
+    if (categories.length > 0 && (!activeCategory || !categories.some(c => c.id === activeCategory))) {
+      setActiveCategory(categories[0].id);
+    }
+  }, [categories, activeCategory]);
 
   const openProject = (project) => {
     lightboxTriggerRef.current = document.activeElement;
@@ -36,56 +51,13 @@ export default function Portfolio() {
     };
   }, [selectedProject]);
 
-  const allProjects = t.work?.projects || [];
-  const categoryOrder = [
-    '4320a3a6-909c-4d60-ba22-94c4ecbb2679',
-    '87aff9a1-6ea1-4880-aa24-557765a6e16f',
-    '20ec7d0f-9a25-4c89-8816-b828aeaf4181',
-    '18a252e6-337e-45e2-a9da-34052a3c9d9c',
-    'db3fa4eb-7a49-4d2f-93ee-720ad7925bd3',
-    '83475072-ad53-4381-9fac-3cd57f15f895',
-  ];
-  const categories = [...(t.work?.categories || [])].sort(
-    (a, b) => categoryOrder.indexOf(a.id) - categoryOrder.indexOf(b.id),
-  );
-  const featuredOrder = [
-    '46340201-778c-4247-8d88-5caf71cf8e4a',
-    'fe7032e6-663b-43bb-8206-954511e2f7b3',
-    'c2a1e09b-ede1-4a4b-8fd6-bdf1a0e09284',
-    '91d51238-9274-4a5b-a5d1-3f51f76874af',
-    '585249d7-2765-4b2d-88ae-8b5206bb924b',
-    'd440e7ff-d9fb-4326-b2c2-925e86b5d2a0',
-  ];
-  const mainProjects = featuredOrder
-    .map((id) => allProjects.find((project) => project.id === id))
-    .filter(Boolean);
-  const categoryLabels = {
-    '46340201-778c-4247-8d88-5caf71cf8e4a': 'Брэндинг (M)',
-    'fe7032e6-663b-43bb-8206-954511e2f7b3': 'TV application | UI/UX',
-    'c2a1e09b-ede1-4a4b-8fd6-bdf1a0e09284': 'Website UI/UX',
-    '91d51238-9274-4a5b-a5d1-3f51f76874af': 'Савалгаа дизайн',
-    '585249d7-2765-4b2d-88ae-8b5206bb924b': 'Сошил медиа',
-    'd440e7ff-d9fb-4326-b2c2-925e86b5d2a0': 'Брэндинг',
-  };
-  const galleryOrder = [
-    '1790166596770-japan1.jpg', '1790166869137-Ayanz2.jpg', '1790224471463-Ayanz3.jpg',
-    '1790167540092-so1.jpg', '1790167624813-so6.jpg', '1790167524794-so2.jpg', '1790224545579-so4.jpg',
-    '1790169722217-so5.jpg', '1790224652639-so7.jpg', '1790224675484-so3.jpg',
-    '1790169212280-ynmal2.jpg', '1790169170105-ynmal1.jpg', '1790169260283-ynmal3.jpg', '1790224861078-ynmal4.jpg',
-    '1790225170914-Tx1.jpg', '1790225213555-Tx4.jpg', '1790225283851-Tx2.jpg', '1790225303393-Tx3.jpg',
-    '1790226141332-toktok2.jpg', '1790226194645-toktok1.jpg', '1790227047331-toktok3.jpg',
-    '1790225700615-argun1.jpg', '1790225714598-argun2.jpg', '1790225725792-argun3.jpg', '1790225738947-argun4.jpg',
-    '1790226785965-Tet2.jpg', '1790226799673-Tet4.jpg', '1790226772515-Tet1.jpg',
-    '1790226510837-Ren1.jpg', '1790226524070-Ren2.jpg', '1790226537912-Ren4.jpg', '1790226552104-Ren3.jpg',
-  ];
-  const galleryProjects = allProjects
-    .filter((project) => project.category_id === activeCategory)
-    .sort((a, b) => {
-      const aIndex = galleryOrder.findIndex((name) => a.image?.endsWith(name));
-      const bIndex = galleryOrder.findIndex((name) => b.image?.endsWith(name));
-      return (aIndex < 0 ? 999 : aIndex) - (bIndex < 0 ? 999 : bIndex);
-    })
-    .filter((project) => activeCategory !== categoryOrder[0] || galleryOrder.some((name) => project.image?.endsWith(name)));
+  const mainProjects = allProjects.filter((p) => p.featured).length > 0
+    ? allProjects.filter((p) => p.featured)
+    : allProjects.slice(0, 6);
+
+  const galleryProjects = (!activeCategory || activeCategory === 'all')
+    ? allProjects
+    : allProjects.filter((project) => project.category_id === activeCategory || project.categorySlug === activeCategory);
 
   const renderProjectItem = (project, idx, showIndex = true) => {
     return (
@@ -107,7 +79,7 @@ export default function Portfolio() {
           aria-label={`${project.title} — ${lang === 'en' ? 'View details' : 'Дэлгэрэнгүй үзэх'}`}
           className="cursor-pointer"
         >
-          <div className="folio-media">
+          <div className={`folio-media ${!project.image ? '!border-0 !border-none !bg-[#111111]' : ''}`}>
             {project.image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -116,7 +88,7 @@ export default function Portfolio() {
                 loading="lazy"
               />
             ) : (
-              <div className="w-full aspect-[4/3] flex items-center justify-center text-neutral-600 bg-neutral-900">
+              <div className="w-full aspect-[4/3] flex items-center justify-center text-neutral-400 bg-[#111111] !border-0 !border-none font-semibold text-center p-4">
                 {project.title}
               </div>
             )}
@@ -131,7 +103,7 @@ export default function Portfolio() {
             <div className="folio-meta-l">
               <h3>{project.title}</h3>
               <span className="folio-cat">
-                {categoryLabels[project.id] || project.category || (lang === 'en' ? 'Design' : 'Дизайн')}
+                {project.category || (lang === 'en' ? 'System' : 'Систем')}
                 {project.client ? ` · ${project.client}` : project.year ? ` · ${project.year}` : ''}
               </span>
             </div>
@@ -141,7 +113,7 @@ export default function Portfolio() {
               <span className="folio-detail">
                 {lang === 'en' ? 'View details' : 'Дэлгэрэнгүй үзэх'}
               </span>
-              {!project.projectUrl && (
+              {!project.url && !project.projectUrl && (
                 <span className="folio-soon">
                   {lang === 'en' ? 'Coming soon' : 'Тун удахгүй'}
                 </span>
@@ -184,7 +156,7 @@ export default function Portfolio() {
         </div>
       </div>
 
-      {/* Main 6 Projects Masonry Grid */}
+      {/* Main Projects Masonry Grid */}
       {mainProjects.length > 0 && (
         <div className="folio">
           {mainProjects.map((p, idx) => renderProjectItem(p, idx, false))}
@@ -217,22 +189,26 @@ export default function Portfolio() {
             })}
           </div>
           <div className="folio-catview">
-            <div className={activeCategory === categoryOrder[0] ? 'folio-gallery' : 'folio-full'}>
+            <div className="folio-gallery">
               {galleryProjects.map((project, index) => {
-                const isWide = [2, 7, 20, 25].includes(index) && activeCategory === categoryOrder[0];
+                const isWide = [2, 5].includes(index);
                 return (
                   <button
-                    key={project.id || project.image}
+                    key={project.id || index}
                     type="button"
-                    className={activeCategory === categoryOrder[0]
-                      ? `rise fg-item fg-${isWide ? '16x9' : '1x1'}`
-                      : 'rise ff-item'}
+                    className={`rise fg-item fg-${isWide ? '16x9' : '1x1'} ${!project.image ? '!border-0 !border-none !bg-[#111111]' : ''}`}
                     style={{ animationDelay: `${(index % 4) * 0.05}s` }}
                     onClick={() => openProject(project)}
                     aria-label={project.title}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={project.image} alt={project.title} loading="lazy" />
+                    {project.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={project.image} alt={project.title} loading="lazy" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-[#111111] text-neutral-400 font-medium p-4 text-center text-xs !border-0 !border-none">
+                        {project.title}
+                      </div>
+                    )}
                   </button>
                 );
               })}
@@ -241,17 +217,17 @@ export default function Portfolio() {
         </>
       )}
 
-      {/* Lightbox Modal */}
-      {selectedProject && (
+      {/* Lightbox Modal rendered via Portal to escape transforms and display above header */}
+      {mounted && selectedProject && createPortal(
         <div
-          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+          className="fixed inset-0 z-[99999] bg-black/92 flex items-center justify-center p-4 sm:p-6"
           onClick={closeProject}
           role="dialog"
           aria-modal="true"
           aria-labelledby="portfolio-dialog-title"
         >
           <div
-            className="relative max-w-4xl w-full bg-[#0c0c0c] border border-white/20 rounded-2xl overflow-hidden p-6 md:p-8"
+            className="relative max-w-4xl w-full bg-[#0c0c0c] border border-white/10 rounded-2xl overflow-hidden p-6 md:p-8 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -264,38 +240,64 @@ export default function Portfolio() {
               ✕
             </button>
 
-            <div className="aspect-[16/10] rounded-xl overflow-hidden mb-6 bg-black">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={selectedProject.image}
-                alt={selectedProject.title}
-                className="w-full h-full object-contain"
-              />
+            <div className="aspect-[16/10] rounded-xl overflow-hidden mb-6 bg-[#111111] !border-0 !border-none flex items-center justify-center">
+              {selectedProject.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={selectedProject.image}
+                  alt={selectedProject.title}
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-neutral-300 bg-[#111111] text-xl font-semibold !border-0 !border-none p-6 text-center">
+                  {selectedProject.title}
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-widest block mb-1">
-                  {selectedProject.year || '2026'}
+                  {selectedProject.category || selectedProject.year || '2026'}
                 </span>
                 <h3 id="portfolio-dialog-title" className="text-2xl font-bold text-white uppercase tracking-tight">
                   {selectedProject.title}
                 </h3>
+                {selectedProject.description && (
+                  <p className="text-sm text-neutral-400 mt-2 max-w-xl">
+                    {selectedProject.description}
+                  </p>
+                )}
               </div>
 
-              <a
-                href="#contact"
-                onClick={closeProject}
-                className="cta !text-xs !px-6"
-              >
-                <span className="cta-roll">
-                  <span className="cta-l">{t.nav?.ctaRoll1 || (lang === 'en' ? 'Order' : 'Захиалга')}</span>
-                  <span className="cta-l" aria-hidden="true">{t.nav?.ctaRoll2 || (lang === 'en' ? 'Order' : 'Захиалга')}</span>
-                </span>
-              </a>
+              {selectedProject.url ? (
+                <a
+                  href={selectedProject.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta accent-btn !bg-[#ff401f] !text-white !font-bold !text-xs !px-6 hover:brightness-110 transition-all shrink-0"
+                >
+                  <span className="cta-roll">
+                    <span className="cta-l">{lang === 'en' ? 'Visit website →' : 'Вэбсайт руу зочлох →'}</span>
+                    <span className="cta-l" aria-hidden="true">{lang === 'en' ? 'Visit website →' : 'Вэбсайт руу зочлох →'}</span>
+                  </span>
+                </a>
+              ) : (
+                <a
+                  href="#contact"
+                  onClick={closeProject}
+                  className="cta accent-btn !bg-[#ff401f] !text-white !font-bold !text-xs !px-6 hover:brightness-110 transition-all shrink-0"
+                >
+                  <span className="cta-roll">
+                    <span className="cta-l">{t.nav?.ctaRoll1 || (lang === 'en' ? 'Order' : 'Захиалга')}</span>
+                    <span className="cta-l" aria-hidden="true">{t.nav?.ctaRoll2 || (lang === 'en' ? 'Order' : 'Захиалга')}</span>
+                  </span>
+                </a>
+              )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );

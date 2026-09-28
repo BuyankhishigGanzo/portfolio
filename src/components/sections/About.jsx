@@ -16,9 +16,10 @@ export default function About() {
     'Coding',
     'Creative Concept',
   ];
-  const skills = [...(t.about?.skills || [])].sort(
-    (a, b) => skillOrder.indexOf(a.name) - skillOrder.indexOf(b.name),
-  );
+  const rawSkills = t.about?.skills || [];
+  const skills = rawSkills.some((s) => skillOrder.includes(s.name))
+    ? [...rawSkills].sort((a, b) => skillOrder.indexOf(a.name) - skillOrder.indexOf(b.name))
+    : rawSkills;
   const portraitImgRef = useRef(null);
 
   // Parallax on portrait image matching reference formula exactly
@@ -75,7 +76,7 @@ export default function About() {
       <div className="about-grid">
         {/* Left Column: Portrait, Bio, Resume */}
         <div className="about-col">
-          <div className="about-portrait rise" style={{ animationDelay: '0.05s' }}>
+          <div className={`about-portrait rise ${!t.about?.portraitImage ? '!border-0 !border-none !bg-[#111111]' : ''}`} style={{ animationDelay: '0.05s' }}>
             {t.about?.portraitImage ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -84,7 +85,7 @@ export default function About() {
                 alt={siteConfig.name}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-neutral-600">
+              <div className="w-full h-full flex items-center justify-center text-neutral-500 !border-0 !border-none !bg-[#111111] font-semibold text-lg">
                 {siteConfig.name}
               </div>
             )}

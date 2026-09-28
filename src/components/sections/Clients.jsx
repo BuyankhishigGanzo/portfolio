@@ -12,8 +12,13 @@ export default function Clients() {
   const names1 = ['Ynmal', 'Ayanz', 'etest', 'Grass', 'Pik', 'Tet', 'Somedia', 'Tumurxac', 'GBHG', 'Argun'];
   const names2 = ['Asian city', 'Enbarr', 'Global Bridge', 'pp', 'Ren', 'Aranjin', 'Toktok', 'Visahub', 'StarTV'];
   const byName = new Map(clients.map((client) => [client.name, client]));
-  const row1 = names1.map((name) => byName.get(name)).filter(Boolean);
-  const row2 = names2.map((name) => byName.get(name)).filter(Boolean);
+  let row1 = names1.map((name) => byName.get(name)).filter(Boolean);
+  let row2 = names2.map((name) => byName.get(name)).filter(Boolean);
+  if (row1.length === 0) {
+    const half = Math.ceil(clients.length / 2);
+    row1 = clients.slice(0, half);
+    row2 = clients.slice(half);
+  }
 
   // Duplicate items for seamless continuous marquee loop
   const duplicateList = (arr) => [...arr, ...arr, ...arr, ...arr];

@@ -6,7 +6,10 @@ import { siteConfig } from '@/data/siteContent';
 export default function IntroVeil({ onRelease }) {
   const [isIntro, setIsIntro] = useState(true);
   const [isDone, setIsDone] = useState(false);
-  const word = (siteConfig.brandWordmark || 'ONDESIGN').toUpperCase().replace(/[^A-Z]/g, '') || 'ONDESIGN';
+  const word = (siteConfig.brandWordmark || 'NOVA HEX')
+    .toUpperCase()
+    .replace(/[^A-Z\s]/g, '')
+    .trim() || 'NOVA HEX';
 
   useEffect(() => {
     // If user prefers reduced motion, skip intro veil immediately

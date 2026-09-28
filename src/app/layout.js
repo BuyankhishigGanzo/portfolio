@@ -8,8 +8,8 @@ import ScrollEngine from '@/components/layout/ScrollEngine';
 import IntroVeil from '@/components/layout/IntroVeil';
 
 export const metadata = {
-  title: 'Дизайнер Онон | График дизайнер — Ondesign',
-  description: 'Дизайнер Онон — Ondesign-ийн үүсгэн байгуулагч, график дизайнер. Брэндинг, лого, motion болон вэбсайт дизайны бүтээлүүд.',
+  title: 'Нова хекс ХХК | Технологи, Дижитал шийдэл хөгжүүлэгч — Nova Hex LLC',
+  description: 'Нова хекс ХХК — Програм хангамж, вэб ба мобайл систем, хиймэл оюунт экосистем хөгжүүлэгч технологийн компани. grado.mn, eguide.mn, eventy.mn, edugame.mn платформуудын бүтээгч.',
 };
 
 export const viewport = {

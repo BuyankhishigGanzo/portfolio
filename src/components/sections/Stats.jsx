@@ -3,29 +3,32 @@
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
-const stats = {
+const defaultStats = {
   mn: [
-    { value: '92', suffix: '+', label: 'Хамтран ажилласан харилцагч' },
-    { value: '11', suffix: '+', label: 'Жилийн туршлага' },
-    { value: '200', suffix: '+', label: 'Дуусгасан төсөл' },
-    { value: '99', suffix: '%', label: 'Сэтгэл ханамж' },
+    { value: '7', suffix: '+', label: 'Дижитал платформ, системүүд' },
+    { value: '38', suffix: '+', label: 'Аудио хөтчийн хэлний дэмжлэг' },
+    { value: '100', suffix: 'K+', label: 'Хүрсэн хэрэглэгчид' },
+    { value: '99.9', suffix: '%', label: 'Найдвартай ажиллагаа' },
   ],
   en: [
-    { value: '92', suffix: '+', label: 'Clients served' },
-    { value: '11', suffix: '+', label: 'Years of experience' },
-    { value: '200', suffix: '+', label: 'Projects completed' },
-    { value: '99', suffix: '%', label: 'Client satisfaction' },
+    { value: '7', suffix: '+', label: 'Digital platforms & systems' },
+    { value: '38', suffix: '+', label: 'Audio guide languages' },
+    { value: '100', suffix: 'K+', label: 'Users reached' },
+    { value: '99.9', suffix: '%', label: 'System uptime' },
   ],
 };
 
 export default function Stats() {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
+  const items = Array.isArray(t.stats) && t.stats.length > 0 && t.stats[0].value 
+    ? t.stats 
+    : (defaultStats[lang] || defaultStats.mn);
 
   return (
     <section className="section" data-anim="up">
       <div className="container">
         <div className="stats">
-          {stats[lang].map((stat, index) => (
+          {items.map((stat, index) => (
             <div
               key={stat.label}
               className="rise st"

@@ -10,9 +10,10 @@ export default function Pricing() {
     '1c1b2e0a-5499-4b5e-88db-6efabd3f1bd2',
     '6cb7316f-7a76-4b00-8ec9-47cfbed19811',
   ];
-  const plans = [...(t.plans?.plans || [])].sort(
-    (a, b) => planOrder.indexOf(a.id) - planOrder.indexOf(b.id),
-  );
+  const rawPlans = t.plans?.plans || [];
+  const plans = rawPlans.some((p) => planOrder.includes(p.id))
+    ? [...rawPlans].sort((a, b) => planOrder.indexOf(a.id) - planOrder.indexOf(b.id))
+    : rawPlans;
 
   return (
     <section className="section container" id="plans" data-anim="zoom">
