@@ -1,0 +1,29 @@
+@import '../../ref.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Local component compatibility with the captured reference stylesheet. */
+:root {
+  --accent: #ff401f;
+  --muted: #ebebeb;
+  --sec-pad: clamp(44px, 7vh, 100px);
+  --hero-scale: 0.8;
+  --m-scale: 0.92;
+  --logo-h: 38px;
+  --nav-fs: 12px;
+  --nav-gap: 30px;
+  --cta-fs: 13px;
+  --cta-px: 17px;
+  --cta-py: 6px;
+  --btn-fs: 13px;
+  --btn-px: 26px;
+  --btn-py: 16px;
+  --marquee-speed: 32s;
+  --rate-dot: 6px;
+  --anim-dur: 1.2s;
+}
+
+.relative { position: relative; }
+.z-10 { z-index: 10; }
