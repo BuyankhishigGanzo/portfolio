@@ -92,9 +92,10 @@ function PlanCard({ plan, idx, lang, t }) {
         </div>
 
         {plan.billingToggle ? (
-          <div className="plan-billing" role="tablist">
+          <div className="plan-billing" role="group" aria-label={lang === 'en' ? 'Billing period' : 'Төлбөрийн хугацаа'}>
             <button
               type="button"
+              aria-pressed={!isYearly}
               className={!isYearly ? 'on' : ''}
               onClick={() => setIsYearly(false)}
             >
@@ -102,6 +103,7 @@ function PlanCard({ plan, idx, lang, t }) {
             </button>
             <button
               type="button"
+              aria-pressed={isYearly}
               className={isYearly ? 'on' : ''}
               onClick={() => setIsYearly(true)}
             >

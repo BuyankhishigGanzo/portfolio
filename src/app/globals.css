@@ -49,3 +49,9 @@ button {
   font-family: monospace;
   line-height: normal;
 }
+
+@media (max-width: 680px) {
+  .hero .pfx-dust:nth-child(n + 61) {
+    display: none;
+  }
+}

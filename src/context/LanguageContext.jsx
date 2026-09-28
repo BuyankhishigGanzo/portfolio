@@ -17,6 +17,10 @@ export function LanguageProvider({ children }) {
     }
   }, []);
 
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const toggleLang = () => {
     const nextLang = lang === 'mn' ? 'en' : 'mn';
     setLang(nextLang);

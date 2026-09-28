@@ -52,17 +52,26 @@ export default function Services() {
               key={service.id || idx}
               className={`srv-item rise ${isOpen ? 'open' : ''}`}
               style={{ animationDelay: `${idx * 0.06}s` }}
-              onClick={() => setOpenId(isOpen ? null : service.id)}
             >
-              <div className="srv-head">
+              <button
+                type="button"
+                className="srv-head"
+                aria-expanded={isOpen}
+                aria-controls={`service-panel-${service.id || idx}`}
+                onClick={() => setOpenId(isOpen ? null : service.id)}
+              >
                 <span className="srv-n">
                   {service.num || String(idx + 1).padStart(2, '0')}
                 </span>
                 <h3>{service.title}</h3>
                 <span className="srv-chev">{isOpen ? '−' : '+'}</span>
-              </div>
+              </button>
 
-              <div className="srv-body">
+              <div
+                className="srv-body"
+                id={`service-panel-${service.id || idx}`}
+                aria-hidden={!isOpen}
+              >
                 <div className="srv-body-in">
                   <p>{service.description}</p>
                   {(hasPrice || service.priceLabel) && (

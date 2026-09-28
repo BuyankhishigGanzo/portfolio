@@ -1,20 +1,34 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function MobileMenu({ isOpen, onClose }) {
   const { lang, toggleLang, t, siteConfig, navItems } = useLanguage();
+  const panelRef = useRef(null);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement;
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
+      if (e.key === 'Tab' && isOpen && panelRef.current) {
+        const focusable = [...panelRef.current.querySelectorAll('a, button')]
+          .filter((element) => !element.disabled && element.offsetParent !== null);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
 
     const handleResize = () => {
@@ -23,10 +37,15 @@ export default function MobileMenu({ isOpen, onClose }) {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('resize', handleResize);
+    const frameId = isOpen
+      ? requestAnimationFrame(() => panelRef.current?.querySelector('a, button')?.focus())
+      : 0;
     return () => {
-      document.body.style.overflow = '';
+      cancelAnimationFrame(frameId);
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('resize', handleResize);
+      if (isOpen) previousFocus?.focus?.();
     };
   }, [isOpen, onClose]);
 
@@ -43,8 +62,12 @@ export default function MobileMenu({ isOpen, onClose }) {
       className={`nav-drawer ${isOpen ? 'open' : ''}`}
       onClick={onClose}
       aria-hidden={!isOpen}
+      role="dialog"
+      aria-modal={isOpen ? 'true' : undefined}
+      aria-label={lang === 'en' ? 'Navigation menu' : 'Үндсэн цэс'}
     >
       <div
+        ref={panelRef}
         className="nav-drawer-panel"
         onClick={(e) => e.stopPropagation()}
       >

@@ -1,12 +1,40 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function Portfolio() {
   const { t, lang } = useLanguage();
   const [activeCategory, setActiveCategory] = useState('4320a3a6-909c-4d60-ba22-94c4ecbb2679');
   const [selectedProject, setSelectedProject] = useState(null);
+  const closeButtonRef = useRef(null);
+  const lightboxTriggerRef = useRef(null);
+
+  const openProject = (project) => {
+    lightboxTriggerRef.current = document.activeElement;
+    setSelectedProject(project);
+  };
+
+  const closeProject = () => setSelectedProject(null);
+
+  useEffect(() => {
+    if (!selectedProject) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const frameId = requestAnimationFrame(() => closeButtonRef.current?.focus());
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') closeProject();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+      lightboxTriggerRef.current?.focus?.();
+    };
+  }, [selectedProject]);
 
   const allProjects = t.work?.projects || [];
   const categoryOrder = [
@@ -67,7 +95,16 @@ export default function Portfolio() {
         style={{ animationDelay: `${(idx % 2) * 0.08}s` }}
       >
         <div
-          onClick={() => setSelectedProject(project)}
+          onClick={() => openProject(project)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              openProject(project);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={`${project.title} — ${lang === 'en' ? 'View details' : 'Дэлгэрэнгүй үзэх'}`}
           className="cursor-pointer"
         >
           <div className="folio-media">
@@ -180,16 +217,18 @@ export default function Portfolio() {
             })}
           </div>
           <div className="folio-catview">
-            <div className="folio-gallery">
+            <div className={activeCategory === categoryOrder[0] ? 'folio-gallery' : 'folio-full'}>
               {galleryProjects.map((project, index) => {
                 const isWide = [2, 7, 20, 25].includes(index) && activeCategory === categoryOrder[0];
                 return (
                   <button
                     key={project.id || project.image}
                     type="button"
-                    className={`rise fg-item fg-${isWide ? '16x9' : '1x1'}`}
+                    className={activeCategory === categoryOrder[0]
+                      ? `rise fg-item fg-${isWide ? '16x9' : '1x1'}`
+                      : 'rise ff-item'}
                     style={{ animationDelay: `${(index % 4) * 0.05}s` }}
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => openProject(project)}
                     aria-label={project.title}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -206,15 +245,19 @@ export default function Portfolio() {
       {selectedProject && (
         <div
           className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
-          onClick={() => setSelectedProject(null)}
+          onClick={closeProject}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="portfolio-dialog-title"
         >
           <div
             className="relative max-w-4xl w-full bg-[#0c0c0c] border border-white/20 rounded-2xl overflow-hidden p-6 md:p-8"
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              ref={closeButtonRef}
               type="button"
-              onClick={() => setSelectedProject(null)}
+              onClick={closeProject}
               className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors text-lg"
               aria-label="Close"
             >
@@ -235,14 +278,14 @@ export default function Portfolio() {
                 <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-widest block mb-1">
                   {selectedProject.year || '2026'}
                 </span>
-                <h3 className="text-2xl font-bold text-white uppercase tracking-tight">
+                <h3 id="portfolio-dialog-title" className="text-2xl font-bold text-white uppercase tracking-tight">
                   {selectedProject.title}
                 </h3>
               </div>
 
               <a
                 href="#contact"
-                onClick={() => setSelectedProject(null)}
+                onClick={closeProject}
                 className="cta !text-xs !px-6"
               >
                 <span className="cta-roll">

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function Contact() {
-  const { t, lang } = useLanguage();
+  const { t, lang, siteConfig } = useLanguage();
   const formContent = t.contact?.form || {};
 
   const [formData, setFormData] = useState({
@@ -23,17 +23,19 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setStatus('loading');
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({
-        name: '',
-        phone: '',
-        type: '',
-        budget: '',
-        message: ''
-      });
-    }, 700);
+    const subject = lang === 'en'
+      ? `Project inquiry — ${formData.type}`
+      : `Төслийн хүсэлт — ${formData.type}`;
+    const body = [
+      `${formContent.nameLabel || 'Name'}: ${formData.name}`,
+      `${formContent.phoneLabel || 'Phone'}: ${formData.phone}`,
+      `${formContent.typeLabel || 'Project'}: ${formData.type}`,
+      `${formContent.budgetLabel || 'Budget'}: ${formData.budget || '—'}`,
+      '',
+      formData.message,
+    ].join('\n');
+    window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setStatus('email-opened');
   };
 
   return (
@@ -68,13 +70,15 @@ export default function Contact() {
 
       {/* Order Form */}
       <div className="rise" style={{ animationDelay: '0.12s' }}>
-        {status === 'success' ? (
+        {status === 'email-opened' ? (
           <div className="max-w-[600px] mx-auto p-8 rounded-2xl bg-[var(--card)] border border-green-500/30 text-center">
             <h3 className="text-xl font-bold text-white mb-2">
-              {formContent.successTitle || (lang === 'en' ? 'Request sent!' : 'Амжилттай илгээлээ!')}
+              {lang === 'en' ? 'Email draft opened' : 'Имэйл бэлэн боллоо'}
             </h3>
             <p className="text-sm text-neutral-300 mb-6">
-              {formContent.successMsg || (lang === 'en' ? "Thank you — I'll get back to you shortly." : 'Баярлалаа — би тантай яаралтай холбогдох болно.')}
+              {lang === 'en'
+                ? 'Review the message in your email app, then press Send.'
+                : 'Имэйл апп дээрх мэдээллээ шалгаад Илгээх товчийг дарна уу.'}
             </p>
             <button
               type="button"
@@ -146,11 +150,9 @@ export default function Contact() {
             <button
               className="btn accent-btn of-submit"
               type="submit"
-              disabled={status === 'loading'}
+              disabled={false}
             >
-              {status === 'loading'
-                ? (lang === 'en' ? 'Sending…' : 'Илгээж байна…')
-                : (formContent.submit || (lang === 'en' ? 'Get a quote →' : 'Үнийн санал авах →'))}
+              {formContent.submit || (lang === 'en' ? 'Get a quote →' : 'Үнийн санал авах →')}
             </button>
           </form>
         )}

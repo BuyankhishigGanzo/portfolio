@@ -4,6 +4,27 @@ import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { MapPin, Globe, Award } from 'lucide-react';
 
+// Seeded so server and client render the same field while retaining the
+// natural, irregular density of the reference effect.
+const dustParticles = Array.from({ length: 130 }, (_, index) => {
+  let seed = (index + 1) * 9301 + 49297;
+  const random = () => {
+    seed = (seed * 233280 + 49297) % 233280;
+    return seed / 233280;
+  };
+
+  return {
+    x: `${(random() * 100).toFixed(2)}%`,
+    y: `${(random() * 100).toFixed(2)}%`,
+    s: `${(1.3 + random() * 2.8).toFixed(2)}px`,
+    drift: `${(-45 + random() * 90).toFixed(1)}px`,
+    rise: `${Math.round(39 + random() * 42)}px`,
+    dur: `${(7 + random() * 5.5).toFixed(2)}s`,
+    delay: `${(-24 * random()).toFixed(2)}s`,
+    peak: (0.32 + random() * 0.38).toFixed(2),
+  };
+});
+
 export default function Hero() {
   const { t } = useLanguage();
   const heroImgRef = useRef(null);
@@ -37,18 +58,6 @@ export default function Hero() {
       cancelAnimationFrame(frameId);
     };
   }, []);
-
-  // Ambient subtle dust particles (reference ondesign pfx)
-  const dustParticles = [
-    { x: '12%', y: '34%', s: '2px', drift: '22px', rise: '50px', dur: '18s', delay: '-3s', peak: '0.22' },
-    { x: '28%', y: '68%', s: '1.6px', drift: '-18px', rise: '45px', dur: '22s', delay: '-8s', peak: '0.18' },
-    { x: '45%', y: '22%', s: '2.4px', drift: '30px', rise: '58px', dur: '20s', delay: '-14s', peak: '0.24' },
-    { x: '62%', y: '52%', s: '1.8px', drift: '-24px', rise: '48px', dur: '24s', delay: '-6s', peak: '0.19' },
-    { x: '78%', y: '30%', s: '2.2px', drift: '16px', rise: '52px', dur: '19s', delay: '-11s', peak: '0.21' },
-    { x: '88%', y: '75%', s: '1.5px', drift: '-14px', rise: '42px', dur: '25s', delay: '-17s', peak: '0.16' },
-    { x: '35%', y: '82%', s: '2px', drift: '20px', rise: '46px', dur: '21s', delay: '-4s', peak: '0.20' },
-    { x: '72%', y: '88%', s: '1.7px', drift: '-20px', rise: '44px', dur: '23s', delay: '-13s', peak: '0.17' },
-  ];
 
   return (
     <section

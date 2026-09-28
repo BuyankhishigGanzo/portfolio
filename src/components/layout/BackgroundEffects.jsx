@@ -108,6 +108,8 @@ export default function BackgroundEffects() {
     let prevRingY = ringY;
     let clickScale = 0;
     let cursorRafId = 0;
+    let isCursorRunning = false;
+    let cursorIdleTicks = 0;
 
     const tickCursor = () => {
       ringX += (mouseX - ringX) * 0.2;
@@ -131,10 +133,25 @@ export default function BackgroundEffects() {
         cursor.style.transform = `translate3d(${mouseX.toFixed(1)}px, ${mouseY.toFixed(1)}px, 0) translate(-50%, -50%) scale(${(1 + 0.9 * clickScale).toFixed(3)})`;
       }
 
+      if (Math.abs(mouseX - ringX) < 0.15 && Math.abs(mouseY - ringY) < 0.15 && clickScale < 0.002) {
+        if (++cursorIdleTicks > 8) {
+          isCursorRunning = false;
+          return;
+        }
+      } else {
+        cursorIdleTicks = 0;
+      }
+
       cursorRafId = requestAnimationFrame(tickCursor);
     };
 
-    cursorRafId = requestAnimationFrame(tickCursor);
+    const startCursor = () => {
+      if (!isCursorRunning) {
+        isCursorRunning = true;
+        cursorIdleTicks = 0;
+        cursorRafId = requestAnimationFrame(tickCursor);
+      }
+    };
 
     // Mouse movement listener (passive & layout-safe)
     const onMouseMove = (e) => {
@@ -142,7 +159,7 @@ export default function BackgroundEffects() {
       mouseY = e.clientY;
       targetX = mouseX;
       targetY = mouseY;
-      clickScale = 1;
+      startCursor();
 
       if (dotfield) {
         dotfield.classList.add('lit');
@@ -160,6 +177,8 @@ export default function BackgroundEffects() {
     };
 
     const onMouseDown = () => {
+      clickScale = 1;
+      startCursor();
       if (cursorRing) cursorRing.classList.add('is-down');
     };
 
