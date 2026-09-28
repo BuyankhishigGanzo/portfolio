@@ -5,12 +5,28 @@ import { useLanguage } from '@/context/LanguageContext';
 
 export default function About() {
   const { t, siteConfig, lang } = useLanguage();
-  const skills = t.about?.skills || [];
+  const skillOrder = [
+    'Creative Cloud',
+    'Adobe Illustrator',
+    'Adobe Photoshop',
+    'Adobe Premier Pro',
+    'Adobe After Effects',
+    'Adobe XD',
+    'Ai Workflow',
+    'Coding',
+    'Creative Concept',
+  ];
+  const skills = [...(t.about?.skills || [])].sort(
+    (a, b) => skillOrder.indexOf(a.name) - skillOrder.indexOf(b.name),
+  );
   const portraitImgRef = useRef(null);
 
   // Parallax on portrait image matching reference formula exactly
   useEffect(() => {
-    const handleScroll = () => {
+    let frameId = 0;
+
+    const updateImage = () => {
+      frameId = 0;
       const img = portraitImgRef.current;
       if (!img || !img.parentElement) return;
       const rect = img.parentElement.getBoundingClientRect();
@@ -23,8 +39,16 @@ export default function About() {
       }
     };
 
+    const handleScroll = () => {
+      if (!frameId) frameId = requestAnimationFrame(updateImage);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    updateImage();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(frameId);
+    };
   }, []);
 
   return (
@@ -70,14 +94,13 @@ export default function About() {
             {t.about?.copy}
           </p>
 
-          <div className="rise" style={{ animationDelay: '0.16s', marginTop: '22px' }}>
-            <a
-              className="btn"
-              href="#contact"
-            >
-              {t.about?.resumeText || (lang === 'en' ? 'Download résumé' : 'CV татах')}
-            </a>
-          </div>
+          {t.about?.resumeUrl && (
+            <div className="rise" style={{ animationDelay: '0.16s', marginTop: '22px' }}>
+              <a className="btn" href={t.about.resumeUrl}>
+                {t.about?.resumeText || (lang === 'en' ? 'Download résumé' : 'CV татах')}
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Right Column: Toolbox / Skills */}

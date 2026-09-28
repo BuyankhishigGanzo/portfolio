@@ -8,7 +8,17 @@ export default function WebsiteOrder() {
   const wo = t.websiteOrder || {};
 
   return (
-    <section className="section container outro" id="website-order" data-anim="up">
+    <section className="section container outro has-bg" id="website-order" data-anim="zoom">
+      <div className="sec-bg sec-bg-pulse" aria-hidden="true" style={{ opacity: 0.9 }}>
+        <div className="rings rings-soft" aria-hidden="true">
+          {[0, 1, 2].map((index) => (
+            <span key={`static-${index}`} className="ring-static" style={{ '--i': index }} />
+          ))}
+          {[0, -3.6, -7.2].map((delay) => (
+            <span key={`sonar-${delay}`} className="ring-sonar" style={{ '--d': `${delay}s` }} />
+          ))}
+        </div>
+      </div>
       <div className="head-c">
         <div className="eyebrow">
           {wo.eyebrow || (lang === 'en' ? 'Need a website too?' : 'Вебсайт хэрэгтэй юу?')}

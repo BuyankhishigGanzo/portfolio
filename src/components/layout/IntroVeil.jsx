@@ -31,7 +31,6 @@ export default function IntroVeil({ onRelease }) {
       setIsIntro(false);
       siteEl?.classList.remove('intro');
       document.dispatchEvent(new CustomEvent('intro-release'));
-      window.__releaseScrollEngine?.();
       onRelease?.();
 
       clearTimeout(doneTimer);

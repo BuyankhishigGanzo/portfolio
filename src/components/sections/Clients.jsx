@@ -9,8 +9,11 @@ export default function Clients() {
 
   if (!clients.length) return null;
 
-  const row1 = clients.filter((_, index) => index % 2 === 0);
-  const row2 = clients.filter((_, index) => index % 2 === 1);
+  const names1 = ['Ynmal', 'Ayanz', 'etest', 'Grass', 'Pik', 'Tet', 'Somedia', 'Tumurxac', 'GBHG', 'Argun'];
+  const names2 = ['Asian city', 'Enbarr', 'Global Bridge', 'pp', 'Ren', 'Aranjin', 'Toktok', 'Visahub', 'StarTV'];
+  const byName = new Map(clients.map((client) => [client.name, client]));
+  const row1 = names1.map((name) => byName.get(name)).filter(Boolean);
+  const row2 = names2.map((name) => byName.get(name)).filter(Boolean);
 
   // Duplicate items for seamless continuous marquee loop
   const duplicateList = (arr) => [...arr, ...arr, ...arr, ...arr];

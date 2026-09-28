@@ -11,7 +11,10 @@ export default function Hero() {
 
   // Parallax on hero image matching reference website calculation
   useEffect(() => {
-    const handleScroll = () => {
+    let frameId = 0;
+
+    const updateImage = () => {
+      frameId = 0;
       const img = heroImgRef.current;
       if (!img) return;
       const rect = img.parentElement.getBoundingClientRect();
@@ -23,8 +26,16 @@ export default function Hero() {
       }
     };
 
+    const handleScroll = () => {
+      if (!frameId) frameId = requestAnimationFrame(updateImage);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    updateImage();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(frameId);
+    };
   }, []);
 
   // Ambient subtle dust particles (reference ondesign pfx)
@@ -94,7 +105,7 @@ export default function Hero() {
           </span>
           <span className="h-mask">
             <span className="reveal-line" style={{ animationDelay: '0.08s' }}>
-              <span className="accent">{t.hero.headingLine2}</span>
+              {t.hero.headingLine2}
             </span>
           </span>
         </h1>

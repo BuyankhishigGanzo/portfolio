@@ -204,7 +204,7 @@ export const content = {
     },
     work: {
       eyebrow: "Бүтээлүүд",
-      side: "2016 — 2026 он",
+      side: "2016 - 2026 он",
       heading: "Сүүлийн",
       headingAccent: "хийсэн ажлууд",
       sub: "Хамгийн сүүлд гүйцэтгэсэн онцлох ажлуудыг танилцуулж байна.",
@@ -793,12 +793,12 @@ export const content = {
 ]
     },
     about: {
-      eyebrow: "Би хэн бэ",
+      eyebrow: "Би хэн бэ?",
       heading: "Миний тухай",
       portraitImage: "https://hkiavlrermyfkwvvxukh.supabase.co/storage/v1/object/public/media/1789908232184-Portrait.jpg",
       copy: "Дизайн бол зөвхөн гоё харагдах тухай биш. Энэ бол асуудалд шийдэл, бизнест өсөлт, шинэ эхлэлд боломж, харах мэдрэхүйд гоо зүйг тэнцвэртэй инженерчлэх тухай. Би хэрэгцээ, хэрэглээ, хэрэглэгчийг ойлгож, мэдэрч ажиллахыг дизайны хамгийн чухал хэсэг гэж итгэдэг. Энэ бол график дизайныг 10 жил суралцаж ажиллах хугацаанд хуримтлуулсан туршлагаас минь бий болсон итгэл үнэмшил юм.",
       resumeText: "CV татах",
-      resumeUrl: "#contact",
+      resumeUrl: "",
       skillsEyebrow: "Мэргэжлийн ур чадвар",
       skillsSub: "Өдөр бүр ажилладаг программууд.",
       skills: [
@@ -911,7 +911,7 @@ export const content = {
     },
     services: {
       eyebrow: "Үйлчилгээ",
-      side: "Үйлчилгээнүүд",
+      side: "",
       heading: "Мэргэжлийн",
       headingAccent: "үйлчилгээ",
       sub: "Санаанаас эхлүүлэх хүртэл брэндэд шаардлагатай гол үйлчилгээнүүд.",
@@ -2140,7 +2140,7 @@ export const content = {
       portraitImage: "https://hkiavlrermyfkwvvxukh.supabase.co/storage/v1/object/public/media/1789908232184-Portrait.jpg",
       copy: "Design is not just about making things look good. It is about creating solutions to problems, driving growth for businesses, creating opportunities for new beginnings, and balancing aesthetics with the way people see and feel. I believe understanding and sensing the needs, usage, and people behind a project is one of the most important parts of design. This belief has been shaped by 10 years of studying and working in graphic design.",
       resumeText: "Download résumé",
-      resumeUrl: "#contact",
+      resumeUrl: "",
       skillsEyebrow: "Toolbox",
       skillsSub: "The software I work in every day.",
       skills: [

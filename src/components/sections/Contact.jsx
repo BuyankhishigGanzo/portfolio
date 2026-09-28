@@ -37,7 +37,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="section container outro" id="contact" data-anim="up">
+    <section className="section container outro" id="contact" data-anim="zoom">
       {/* Centered Eyebrow */}
       <div className="eyebrow center">
         {t.contact?.eyebrow || (lang === 'en' ? 'Start a project' : 'Захиалга өгөх')}

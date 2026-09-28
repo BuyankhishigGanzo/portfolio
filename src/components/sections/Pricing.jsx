@@ -5,7 +5,14 @@ import { useLanguage } from '@/context/LanguageContext';
 
 export default function Pricing() {
   const { t, lang } = useLanguage();
-  const plans = t.plans?.plans || [];
+  const planOrder = [
+    'c4dfe2f8-88cb-4b5b-bde3-cbbaa092cd32',
+    '1c1b2e0a-5499-4b5e-88db-6efabd3f1bd2',
+    '6cb7316f-7a76-4b00-8ec9-47cfbed19811',
+  ];
+  const plans = [...(t.plans?.plans || [])].sort(
+    (a, b) => planOrder.indexOf(a.id) - planOrder.indexOf(b.id),
+  );
 
   return (
     <section className="section container" id="plans" data-anim="zoom">
@@ -60,7 +67,11 @@ function PlanCard({ plan, idx, lang, t }) {
 
   const featureList = hasTiers && currentTier?.features
     ? currentTier.features
-    : plan.features || [];
+    : Array.isArray(plan.featureList) && plan.featureList.length
+      ? plan.featureList
+          .filter((feature) => !feature.optional)
+          .map((feature) => lang === 'en' ? feature.label_en : feature.label_mn)
+      : plan.features || [];
 
   return (
     <div
@@ -158,13 +169,13 @@ function PlanCard({ plan, idx, lang, t }) {
           {lang === 'en' ? "What's included" : 'Багцад багтсан'}
         </div>
 
-        <ul className="plan-feat">
-          {featureList.map((f, fIdx) => (
-            <li key={fIdx}>
-              {f}
-            </li>
-          ))}
-        </ul>
+        <div className="plan-feat-stack">
+          <ul className="plan-feat">
+            {featureList.map((f, fIdx) => (
+              <li key={fIdx}>{f}</li>
+            ))}
+          </ul>
+        </div>
 
         <a
           href="#contact"
