@@ -10,6 +10,15 @@ import IntroVeil from '@/components/layout/IntroVeil';
 export const metadata = {
   title: 'Нова хекс ХХК | Технологи, Дижитал шийдэл хөгжүүлэгч — Nova Hex LLC',
   description: 'Нова хекс ХХК — Програм хангамж, вэб ба мобайл систем, хиймэл оюунт экосистем хөгжүүлэгч технологийн компани. grado.mn, eguide.mn, eventy.mn, edugame.mn платформуудын бүтээгч.',
+  icons: {
+    icon: [
+      { url: '/icon.png', sizes: '159x150', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '159x150', type: 'image/png' },
+    ],
+  },
 };
 
 export const viewport = {

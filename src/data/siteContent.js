@@ -3,9 +3,10 @@
 export const siteConfig = {
   name: "Нова хекс ХХК",
   brandWordmark: "nova hex.",
-  logoUrl: "",
+  logoUrl: "/images/logo.png",
   email: "info@novahex.mn",
   phone: "+976 7777 9969",
+  web3FormsAccessKey: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "777f2f9e-446d-4c42-bf06-a2135f41d80e",
   currency: {
     mn: "₮",
     en: "$"
@@ -219,7 +220,7 @@ export const content = {
           category: "Веб & Систем",
           category_id: "web-system",
           categorySlug: "web-system",
-          image: "",
+          image: "/images/grado.webp",
           featured: true,
           year: 2026,
           client: "Nova Hex LLC"
@@ -233,7 +234,7 @@ export const content = {
           category: "Аудио хөтөч & Музей",
           category_id: "guide",
           categorySlug: "guide",
-          image: "",
+          image: "/images/eguide.webp",
           featured: true,
           year: 2026,
           client: "БШУҮМ & Nova Hex"
@@ -247,7 +248,7 @@ export const content = {
           category: "Эвент менежмент",
           category_id: "event",
           categorySlug: "event",
-          image: "",
+          image: "/images/eventy.webp",
           featured: true,
           year: 2026,
           client: "Nova Hex LLC"
@@ -261,7 +262,7 @@ export const content = {
           category: "Боловсрол & EdTech",
           category_id: "edtech",
           categorySlug: "edtech",
-          image: "",
+          image: "/images/edugame.webp",
           featured: true,
           year: 2026,
           client: "Nova Hex LLC"
@@ -275,7 +276,7 @@ export const content = {
           category: "Дижитал хэрэгслүүд & QR",
           category_id: "tools",
           categorySlug: "tools",
-          image: "",
+          image: "/images/banner.webp",
           featured: true,
           year: 2026,
           client: "Grado Ecosystem"
@@ -289,7 +290,7 @@ export const content = {
           category: "Дижитал хэрэгслүүд & QR",
           category_id: "tools",
           categorySlug: "tools",
-          image: "",
+          image: "/images/tool.webp",
           featured: true,
           year: 2026,
           client: "Grado Ecosystem"
@@ -303,7 +304,7 @@ export const content = {
           category: "Дижитал хэрэгслүүд & QR",
           category_id: "tools",
           categorySlug: "tools",
-          image: "",
+          image: "/images/qr.webp",
           featured: true,
           year: 2026,
           client: "Grado Ecosystem"
@@ -619,7 +620,7 @@ export const content = {
           category: "Web & System",
           category_id: "web-system",
           categorySlug: "web-system",
-          image: "",
+          image: "/images/grado.webp",
           featured: true,
           year: 2026,
           client: "Nova Hex LLC"
@@ -633,7 +634,7 @@ export const content = {
           category: "Audio Guide & Museum",
           category_id: "guide",
           categorySlug: "guide",
-          image: "",
+          image: "/images/eguide.webp",
           featured: true,
           year: 2026,
           client: "NMNS & Nova Hex"
@@ -647,7 +648,7 @@ export const content = {
           category: "Event Management",
           category_id: "event",
           categorySlug: "event",
-          image: "",
+          image: "/images/eventy.webp",
           featured: true,
           year: 2026,
           client: "Nova Hex LLC"
@@ -661,7 +662,7 @@ export const content = {
           category: "Education & EdTech",
           category_id: "edtech",
           categorySlug: "edtech",
-          image: "",
+          image: "/images/edugame.webp",
           featured: true,
           year: 2026,
           client: "Nova Hex LLC"
@@ -675,7 +676,7 @@ export const content = {
           category: "Utilities & QR",
           category_id: "tools",
           categorySlug: "tools",
-          image: "",
+          image: "/images/banner.webp",
           featured: true,
           year: 2026,
           client: "Grado Ecosystem"
@@ -689,7 +690,7 @@ export const content = {
           category: "Utilities & QR",
           category_id: "tools",
           categorySlug: "tools",
-          image: "",
+          image: "/images/tool.webp",
           featured: true,
           year: 2026,
           client: "Grado Ecosystem"
@@ -703,7 +704,7 @@ export const content = {
           category: "Utilities & QR",
           category_id: "tools",
           categorySlug: "tools",
-          image: "",
+          image: "/images/qr.webp",
           featured: true,
           year: 2026,
           client: "Grado Ecosystem"
