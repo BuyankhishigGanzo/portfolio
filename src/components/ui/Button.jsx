@@ -21,7 +21,7 @@ export default function Button({
 
   const variantStyles = {
     primary: 'bg-white text-black hover:bg-[var(--accent)] hover:text-white',
-    accent: 'bg-[var(--accent)] text-white hover:brightness-110 shadow-lg shadow-[rgba(255,64,31,0.25)]',
+    accent: 'bg-[var(--accent)] text-white hover:brightness-110 shadow-lg shadow-[rgba(0,114,252,0.25)]',
     outline: 'border border-[rgba(255,255,255,0.16)] text-white hover:border-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.05)]',
     ghost: 'text-neutral-400 hover:text-white hover:bg-[rgba(255,255,255,0.05)]'
   };

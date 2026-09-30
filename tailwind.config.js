@@ -10,7 +10,7 @@ module.exports = {
       colors: {
         bg: '#050505',
         card: '#0c0c0c',
-        accent: '#ff401f',
+        accent: '#0072FC',
         accentBlue: '#6C8CFF',
         line: 'rgba(255, 255, 255, 0.11)',
         'line-soft': 'rgba(255, 255, 255, 0.05)',

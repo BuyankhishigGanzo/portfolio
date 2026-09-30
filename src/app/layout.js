@@ -30,7 +30,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="mn">
-      <body className="antialiased selection:bg-[#ff401f] selection:text-black">
+      <body className="antialiased selection:bg-[#0072FC] selection:text-white">
         <LanguageProvider>
           <div className="site intro">
             <BackgroundEffects />

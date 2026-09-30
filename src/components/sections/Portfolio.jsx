@@ -191,12 +191,11 @@ export default function Portfolio() {
           <div className="folio-catview">
             <div className="folio-gallery">
               {galleryProjects.map((project, index) => {
-                const isWide = [2, 5].includes(index);
                 return (
                   <button
                     key={project.id || index}
                     type="button"
-                    className={`rise fg-item fg-${isWide ? '16x9' : '1x1'} ${!project.image ? '!border-0 !border-none !bg-[#111111]' : ''}`}
+                    className={`rise fg-item ${!project.image ? '!border-0 !border-none !bg-[#111111]' : ''}`}
                     style={{ animationDelay: `${(index % 4) * 0.05}s` }}
                     onClick={() => openProject(project)}
                     aria-label={project.title}
@@ -240,7 +239,7 @@ export default function Portfolio() {
               ✕
             </button>
 
-            <div className="aspect-[16/10] rounded-xl overflow-hidden mb-6 bg-[#111111] !border-0 !border-none flex items-center justify-center">
+            <div className="aspect-[1024/682] rounded-xl overflow-hidden mb-6 bg-[#111111] !border-0 !border-none flex items-center justify-center">
               {selectedProject.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -275,7 +274,7 @@ export default function Portfolio() {
                   href={selectedProject.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="cta accent-btn !bg-[#ff401f] !text-white !font-bold !text-xs !px-6 hover:brightness-110 transition-all shrink-0"
+                  className="cta accent-btn !bg-[#0072FC] !text-white !font-bold !text-xs !px-6 hover:brightness-110 transition-all shrink-0"
                 >
                   <span className="cta-roll">
                     <span className="cta-l">{lang === 'en' ? 'Visit website →' : 'Вэбсайт руу зочлох →'}</span>
@@ -286,7 +285,7 @@ export default function Portfolio() {
                 <a
                   href="#contact"
                   onClick={closeProject}
-                  className="cta accent-btn !bg-[#ff401f] !text-white !font-bold !text-xs !px-6 hover:brightness-110 transition-all shrink-0"
+                  className="cta accent-btn !bg-[#0072FC] !text-white !font-bold !text-xs !px-6 hover:brightness-110 transition-all shrink-0"
                 >
                   <span className="cta-roll">
                     <span className="cta-l">{t.nav?.ctaRoll1 || (lang === 'en' ? 'Order' : 'Захиалга')}</span>

@@ -6,7 +6,7 @@
 
 /* Local component compatibility with the captured reference stylesheet. */
 :root {
-  --accent: #ff401f;
+  --accent: #0072FC;
   --muted: #ebebeb;
   --sec-pad: clamp(44px, 7vh, 100px);
   --hero-scale: 0.8;
@@ -85,5 +85,167 @@ button {
     max-width: 2.4em;
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Portfolio Images: preserve exact aspect ratio and display fully without cropping
+   ========================================================================== */
+.folio-media {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.folio-media img {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1024 / 682 !important;
+  object-fit: contain !important;
+  display: block !important;
+  background-color: #0b0b0b;
+}
+
+.folio-item:hover .folio-media img {
+  transform: scale(1.02) !important;
+}
+
+/* Category Gallery ("Бүтээгдэхүүний ангилал") */
+.folio-gallery {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  gap: clamp(14px, 2vw, 22px) !important;
+}
+
+.fg-item {
+  aspect-ratio: 1024 / 682 !important;
+  min-height: auto !important;
+  width: 100% !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: var(--card) !important;
+  border: 1px solid var(--line) !important;
+  display: block !important;
+  position: relative !important;
+}
+
+.fg-item img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1024 / 682 !important;
+  object-fit: contain !important;
+  display: block !important;
+  background-color: #0b0b0b;
+}
+
+.fg-item:hover img {
+  transform: scale(1.02) !important;
+}
+
+@media (max-width: 640px) {
+  .folio-gallery {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ==========================================================================
+   Header Navbar: Collapsible dock on scroll + Smooth hover expand (No overlap)
+   ========================================================================== */
+
+/* Scrolled: Collapsed into sleek, perfectly balanced compact dock */
+.navwrap.scrolled .nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  max-width: 580px !important;
+  padding: 6px 16px !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(12, 12, 14, 0.88) !important;
+  backdrop-filter: blur(22px) saturate(1.5) !important;
+  box-shadow: 0 18px 46px -20px rgba(0, 0, 0, 0.75) !important;
+  transition: max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1), padding 0.35s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
+}
+
+.navwrap.scrolled .nav .brand {
+  flex: none !important;
+}
+
+.navwrap.scrolled .brand-logo {
+  height: 22px !important;
+}
+
+.navwrap.scrolled .nav-center {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  min-width: 0 !important;
+  min-height: 26px !important;
+}
+
+.navwrap.scrolled .nav .nav-actions {
+  flex: none !important;
+}
+
+/* Scrolled (Collapsed): Dots sit in EXACT geometric center between Logo and Actions */
+.navwrap.scrolled .nav-dots {
+  position: static !important;
+  transform: none !important;
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 1 !important;
+  margin: 0 auto !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.navwrap.scrolled .nav-menu {
+  display: none !important;
+}
+
+/* Scrolled (Hovered): Expand generously (1200px) so all items fit with zero overlap */
+.navwrap.scrolled .nav:hover {
+  max-width: min(1200px, calc(100vw - 32px)) !important;
+  padding: 6px 20px !important;
+}
+
+.navwrap.scrolled .nav:hover .nav-dots {
+  display: none !important;
+}
+
+.navwrap.scrolled .nav:hover .nav-menu {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  margin: 0 auto !important;
+  gap: clamp(14px, 1.8vw, 24px) !important;
+  animation: fadeInNav 0.25s ease 0.12s both;
+}
+
+@keyframes fadeInNav {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 860px) {
+  .navwrap.scrolled .nav {
+    max-width: none !important;
+  }
+  .navwrap.scrolled .nav:hover {
+    max-width: none !important;
   }
 }

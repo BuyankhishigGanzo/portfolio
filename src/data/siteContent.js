@@ -19,7 +19,7 @@ export const siteConfig = {
     dribbble: ""
   },
   theme: {
-    accent: "#ff401f",
+    accent: "#0072FC",
     accentBlue: "#6C8CFF",
     bg: "#050505",
     card: "#0c0c0c",
