@@ -36,11 +36,8 @@ export default function Connect() {
       {/* 3 Connect Cards Grid */}
       <div className="connect-grid">
         {/* Card 1: Phone */}
-        {siteConfig.phone && (
-          <a
-            href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}
-            className="connect-card cc-link"
-          >
+        {(siteConfig.phone || t.connect?.cards?.phone?.value) && (
+          <div className="connect-card">
             <i className="cc-glow" aria-hidden="true"><b /></i>
             <span className="cc-top">
               <span className="cc-ic">
@@ -50,11 +47,26 @@ export default function Connect() {
                 {t.connect?.cards?.phone?.key || 'Call / text'}
               </span>
             </span>
-            <span className="cc-v">{siteConfig.phone}</span>
+            <div className="cc-v flex flex-col gap-1.5">
+              <a
+                href={`tel:${(t.connect?.cards?.phone?.value || siteConfig.phone).replace(/\s+/g, '')}`}
+                className="hover:text-[var(--accent)] transition-colors block"
+              >
+                {t.connect?.cards?.phone?.value || siteConfig.phone}
+              </a>
+              {(t.connect?.cards?.phone?.valueSecondary || siteConfig.phoneSecondary) && (
+                <a
+                  href={`tel:${(t.connect?.cards?.phone?.valueSecondary || siteConfig.phoneSecondary).replace(/\s+/g, '')}`}
+                  className="hover:text-[var(--accent)] transition-colors block text-neutral-200 hover:text-[var(--accent)]"
+                >
+                  {t.connect?.cards?.phone?.valueSecondary || siteConfig.phoneSecondary}
+                </a>
+              )}
+            </div>
             <span className="cc-d">
               {t.connect?.cards?.phone?.desc || 'Quick replies during working hours.'}
             </span>
-          </a>
+          </div>
         )}
 
         {/* Card 2: Location */}

@@ -6,6 +6,7 @@ export const siteConfig = {
   logoUrl: "/images/logo.png",
   email: "info@novahex.mn",
   phone: "+976 7777 9969",
+  phoneSecondary: "+976 8804 0109",
   web3FormsAccessKey: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "777f2f9e-446d-4c42-bf06-a2135f41d80e",
   currency: {
     mn: "₮",
@@ -534,6 +535,7 @@ export const content = {
         phone: {
           key: "Утсаар холбогдох",
           value: "+976 7777 9969",
+          valueSecondary: "+976 8804 0109",
           desc: "Ажлын өдрүүдэд 09:00 - 18:00 цагт."
         },
         location: {
@@ -934,6 +936,7 @@ export const content = {
         phone: {
           key: "Call / Contact",
           value: "+976 7777 9969",
+          valueSecondary: "+976 8804 0109",
           desc: "Mon–Fri from 09:00 to 18:00."
         },
         location: {
